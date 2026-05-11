@@ -1,4 +1,4 @@
-package com.example.exchangeratealerts.dtos;
+package com.example.exchangeratealerts.models;
 
 import com.google.gson.annotations.SerializedName;
 
