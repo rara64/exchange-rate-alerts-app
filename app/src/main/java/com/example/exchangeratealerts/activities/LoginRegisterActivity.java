@@ -4,7 +4,6 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 import android.os.Bundle;
-import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -21,8 +20,7 @@ import com.example.exchangeratealerts.R;
 import com.example.exchangeratealerts.models.JWT;
 import com.example.exchangeratealerts.modules.APIClient;
 import com.example.exchangeratealerts.modules.PrivateStorage;
-
-import java.nio.charset.Charset;
+import android.content.Intent;
 
 public class LoginRegisterActivity extends AppCompatActivity {
 
@@ -41,21 +39,14 @@ public class LoginRegisterActivity extends AppCompatActivity {
         });
 
         client = new APIClient();
-        storage = new PrivateStorage(findViewById(R.id.loginButton));
+        storage = new PrivateStorage(getApplicationContext());
 
         autoLogin();
     }
 
     private void autoLogin() {
-        String username = new String(
-                Base64.decode(
-                        storage.getPreferenceString("username"),
-                        Base64.DEFAULT), Charset.defaultCharset());
-
-        String password = new String(
-                Base64.decode(
-                        storage.getPreferenceString("password"),
-                        Base64.DEFAULT), Charset.defaultCharset());
+        String username = storage.getUsernamePref();
+        String password = storage.getPasswordPref();
 
         if (!username.isEmpty() && !password.isEmpty()) {
             EditText userInput = findViewById(R.id.userInput);
@@ -67,15 +58,8 @@ public class LoginRegisterActivity extends AppCompatActivity {
     }
 
     private void saveCredentials(String username, String password) {
-        storage.setPreferenceString("username",
-                new String(
-                        Base64.encode(username.getBytes(), Base64.DEFAULT),
-                        Charset.defaultCharset()));
-
-        storage.setPreferenceString("password",
-                new String(
-                        Base64.encode(password.getBytes(), Base64.DEFAULT),
-                        Charset.defaultCharset()));
+        storage.setUsernamePref(username);
+        storage.setPasswordPref(password);
     }
 
     private void showSpinner() {
@@ -92,6 +76,12 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
         LinearLayout authButtonGroup = findViewById(R.id.authButtonGroup);
         authButtonGroup.setVisibility(VISIBLE);
+    }
+
+    private void openTargetsActivity() {
+        Intent intent = new Intent(LoginRegisterActivity.this, TargetsActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public void onLoginClick(View view) {
@@ -113,7 +103,9 @@ public class LoginRegisterActivity extends AppCompatActivity {
                 if (saveCredentials)
                     saveCredentials(username, password);
 
-                setContentView(R.layout.targets_activity);
+                storage.setTokenPref(token.token);
+
+                openTargetsActivity();
             }
 
             @Override
@@ -150,7 +142,9 @@ public class LoginRegisterActivity extends AppCompatActivity {
                 if (saveCredentials)
                     saveCredentials(username, password);
 
-                setContentView(R.layout.targets_activity);
+                onLoginClick(view, false);
+
+                openTargetsActivity();
             }
 
             @Override
