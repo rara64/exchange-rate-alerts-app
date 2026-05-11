@@ -15,12 +15,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkerParameters;
 
 import com.example.exchangeratealerts.R;
 import com.example.exchangeratealerts.models.JWT;
 import com.example.exchangeratealerts.modules.APIClient;
 import com.example.exchangeratealerts.modules.PrivateStorage;
+import com.example.exchangeratealerts.workers.AlertWorker;
+
 import android.content.Intent;
+
+import java.util.concurrent.TimeUnit;
 
 public class LoginRegisterActivity extends AppCompatActivity {
 
@@ -84,6 +91,15 @@ public class LoginRegisterActivity extends AppCompatActivity {
         finish();
     }
 
+    private void registerWorker() {
+        PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(
+                AlertWorker.class, 15, TimeUnit.MINUTES).build();
+
+        WorkManager manager = WorkManager.getInstance(getApplicationContext());
+        manager.cancelAllWork();
+        manager.enqueue(request);
+    }
+
     public void onLoginClick(View view) {
         onLoginClick(view, true);
     }
@@ -104,6 +120,8 @@ public class LoginRegisterActivity extends AppCompatActivity {
                     saveCredentials(username, password);
 
                 storage.setTokenPref(token.token);
+
+                registerWorker();
 
                 openTargetsActivity();
             }

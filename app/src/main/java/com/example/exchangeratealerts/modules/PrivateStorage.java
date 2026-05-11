@@ -5,7 +5,14 @@ import android.content.SharedPreferences;
 import android.util.Base64;
 import android.view.View;
 
+import com.example.exchangeratealerts.models.CurrencyAlert;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.nio.charset.Charset;
+import java.util.Arrays;
 
 public class PrivateStorage {
     private static SharedPreferences preferences;
@@ -61,5 +68,28 @@ public class PrivateStorage {
 
     public String getTokenPref() {
         return getPreferenceString("user_token");
+    }
+
+    public void setAlertsPref(CurrencyAlert[] alerts) {
+        try {
+            JSONArray array = new JSONArray();
+
+            for (CurrencyAlert alert: alerts) {
+                JSONObject object = new JSONObject();
+
+                object.putOpt("baseCurrency", alert.baseCurrency);
+                object.putOpt("quoteCurrency", alert.quoteCurrency);
+                object.putOpt("targetValue", alert.targetValue);
+
+                array.put(object);
+            }
+            setPreferenceString("alerts", array.toString());
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String getAlertsPref() {
+        return getPreferenceString("alerts");
     }
 }
