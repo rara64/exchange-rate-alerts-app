@@ -14,7 +14,7 @@ Currently, the app targets SDK version 36 and supports a minimum SDK version of 
 
 The app consists of two activities:
 
-* **LoginRegisterActivity** is an activity that opens on startup and allows the user to log in to an existing account or to register a new one. After the initial login, credentials are stored in the app preferences (which can only be read by the app) and the user is automatically logged in every time. A successful login action adds a custom worker in the background that every 15 minutes checks for new alerts. Notification will be sent to the user when a new alert is available.
+* **LoginRegisterActivity** is an activity that opens on startup and allows the user to log in to an existing account or to register a new one. After the initial login, credentials are stored in the private app preferences as base64 (which can only be read by the app), and the user is automatically logged in every time. A successful login action adds a custom worker in the background that every 15 minutes checks for new alerts. Notification will be sent to the user when a new alert is available.
 <br><br>
 * **TargetsActivity** provides a way to see current targets and quickly look up which targets are met. The user can add a new target via the + button, which opens a custom dialog. Additionally, each target can be edited or removed via the corresponding buttons. Each target is a custom element displayed within a RecyclerView. The user can also decide to log out of the current account on this screen.
 
