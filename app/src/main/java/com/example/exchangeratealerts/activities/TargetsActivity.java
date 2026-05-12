@@ -105,11 +105,11 @@ public class TargetsActivity extends AppCompatActivity {
         String token = storage.getTokenPref();
         LinearLayout emptyRecyclerLayout = findViewById(R.id.emptyCollectionLayout);
 
-        client.GetCurrencyTargets(token, new APIClient.CurrencyTargetsCallback() {
+        client.GetCurrencyTargets(token, new APIClient.ResponseCallback<CurrencyTarget[]>() {
             @Override
             public void onSuccess(CurrencyTarget[] targets) {
                 currencyTargetList = Arrays.asList(targets);
-                client.GetCurrencyAlerts(token, new APIClient.GetCurrencyAlertsCallback() {
+                client.GetCurrencyAlerts(token, new APIClient.ResponseCallback<CurrencyAlert[]>() {
                     @Override
                     public void onSuccess(CurrencyAlert[] alerts) {
 

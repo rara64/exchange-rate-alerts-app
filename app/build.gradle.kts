@@ -18,7 +18,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "API_URL", "\"http://example.pythonanywhere.com\"")
+        buildConfigField("String", "API_URL", "\"https://example.pythonanywhere.com\"")
     }
 
     buildTypes {

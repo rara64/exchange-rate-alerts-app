@@ -129,7 +129,7 @@ public class TargetDialog extends DialogFragment {
                              return;
                          }
 
-                         client.SetCurrencyTarget(storage.getTokenPref(), target, new APIClient.SetCurrencyTargetCallback() {
+                         client.SetCurrencyTarget(storage.getTokenPref(), target, new APIClient.ResponseCallback<CurrencyTarget>() {
                              @Override
                              public void onSuccess(CurrencyTarget target) {
                                  dialog.dismiss();

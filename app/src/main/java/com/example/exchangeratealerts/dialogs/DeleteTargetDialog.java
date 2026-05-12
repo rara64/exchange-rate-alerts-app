@@ -58,7 +58,7 @@ public class DeleteTargetDialog extends DialogFragment {
                         target.baseCurrency = baseCurrency;
                         target.quoteCurrency = quoteCurrency;
                         target.targetValue = targetValue;
-                        client.DeleteCurrencyTarget(storage.getTokenPref(), target, new APIClient.DeleteCurrencyTargetCallback() {
+                        client.DeleteCurrencyTarget(storage.getTokenPref(), target, new APIClient.ResponseCallback<CurrencyTarget>() {
                             @Override
                             public void onSuccess(CurrencyTarget target) {
                                 dialog.dismiss();

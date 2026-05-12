@@ -98,7 +98,7 @@ public class AlertWorker extends Worker {
     }
 
     private void updateAlerts(String token) {
-        client.GetCurrencyAlerts(token, new APIClient.GetCurrencyAlertsCallback() {
+        client.GetCurrencyAlerts(token, new APIClient.ResponseCallback<CurrencyAlert[]>() {
             @Override
             public void onSuccess(CurrencyAlert[] alerts) {
                 notification_id++;
@@ -113,16 +113,14 @@ public class AlertWorker extends Worker {
             }
 
             @Override
-            public void onFailure(int httpCode) {
-
-            }
+            public void onFailure(int httpCode) {}
         });
     }
 
     @NonNull
     @Override
     public Result doWork() {
-        client.Login(storage.getUsernamePref(), storage.getPasswordPref(), new APIClient.LoginCallback() {
+        client.Login(storage.getUsernamePref(), storage.getPasswordPref(), new APIClient.ResponseCallback<JWT>() {
             @Override
             public void onSuccess(JWT token) {
                 updateAlerts(token.token);

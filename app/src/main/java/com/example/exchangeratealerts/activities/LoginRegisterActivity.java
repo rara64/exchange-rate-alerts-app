@@ -19,6 +19,7 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import com.example.exchangeratealerts.R;
+import com.example.exchangeratealerts.models.APIMessage;
 import com.example.exchangeratealerts.models.JWT;
 import com.example.exchangeratealerts.modules.APIClient;
 import com.example.exchangeratealerts.modules.PrivateStorage;
@@ -126,13 +127,13 @@ public class LoginRegisterActivity extends AppCompatActivity {
         String username = userInput.getText().toString();
         String password = passwordInput.getText().toString();
 
-        client.Login(username, password, new APIClient.LoginCallback() {
+        client.Login(username, password, new APIClient.ResponseCallback<JWT>() {
             @Override
-            public void onSuccess(JWT token) {
+            public void onSuccess(JWT body) {
                 if (saveCredentials)
                     saveCredentials(username, password);
 
-                storage.setTokenPref(token.token);
+                storage.setTokenPref(body.token);
 
                 registerWorker();
 
@@ -164,9 +165,9 @@ public class LoginRegisterActivity extends AppCompatActivity {
         EditText passwordInput = findViewById(R.id.passwordInput);
         String username = userInput.getText().toString();
         String password = passwordInput.getText().toString();
-        client.Register(username, password, new APIClient.RegisterCallback() {
+        client.Register(username, password, new APIClient.ResponseCallback<APIMessage>() {
             @Override
-            public void onSuccess() {
+            public void onSuccess(APIMessage message) {
                 hideSpinner();
 
                 if (saveCredentials)

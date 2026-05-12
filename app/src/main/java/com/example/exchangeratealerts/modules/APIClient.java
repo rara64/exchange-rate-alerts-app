@@ -40,11 +40,21 @@ public class APIClient {
         api = retrofit.create(APIInterface.class);
     }
 
-    public interface LoginCallback {
-        void onSuccess(JWT token);
+    public interface ResponseCallback<T> {
+        void onSuccess(T body);
         void onFailure(int httpCode);
     }
-    public void Login(String username, String password, LoginCallback callback) {
+
+    private void handleResponse(Response response, ResponseCallback callback) {
+        if (response.isSuccessful() && response.body() != null) {
+            callback.onSuccess(response.body());
+        }
+        else {
+            callback.onFailure(response.code());
+        }
+    }
+
+    public void Login(String username, String password, ResponseCallback<JWT> callback) {
         Login login = new Login();
         login.username = username;
         login.password = password;
@@ -53,12 +63,7 @@ public class APIClient {
         loginCall.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<JWT> call, Response<JWT> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    callback.onSuccess(response.body());
-                }
-                else {
-                    callback.onFailure(response.code());
-                }
+                handleResponse(response, callback);
             }
 
             @Override
@@ -68,12 +73,7 @@ public class APIClient {
         });
     }
 
-    public interface RegisterCallback {
-        void onSuccess();
-        void onFailure(int httpCode);
-    }
-
-    public void Register(String username, String password, RegisterCallback callback) {
+    public void Register(String username, String password, ResponseCallback<APIMessage> callback) {
         Login login = new Login();
         login.username = username;
         login.password = password;
@@ -82,12 +82,7 @@ public class APIClient {
         registerCall.enqueue(new Callback<APIMessage>() {
             @Override
             public void onResponse(Call<APIMessage> call, Response<APIMessage> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    callback.onSuccess();
-                }
-                else {
-                    callback.onFailure(response.code());
-                }
+                handleResponse(response, callback);
             }
 
             @Override
@@ -97,22 +92,12 @@ public class APIClient {
         });
     }
 
-    public interface CurrencyTargetsCallback {
-        public void onSuccess(CurrencyTarget[] targets);
-        public void onFailure(int httpCode);
-    }
-
-    public void GetCurrencyTargets(String token, CurrencyTargetsCallback callback) {
+    public void GetCurrencyTargets(String token, ResponseCallback<CurrencyTarget[]> callback) {
         Call<CurrencyTarget[]> targetsCall = api.getCurrentTargets("Bearer " + token);
         targetsCall.enqueue(new Callback<CurrencyTarget[]>() {
             @Override
             public void onResponse(Call<CurrencyTarget[]> call, Response<CurrencyTarget[]> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    callback.onSuccess(response.body());
-                }
-                else {
-                    callback.onFailure(response.code());
-                }
+                handleResponse(response, callback);
             }
 
             @Override
@@ -122,22 +107,12 @@ public class APIClient {
         });
     }
 
-    public interface GetCurrencyAlertsCallback {
-        public void onSuccess(CurrencyAlert[] alerts);
-        public void onFailure(int httpCode);
-    }
-
-    public void GetCurrencyAlerts(String token, GetCurrencyAlertsCallback callback) {
+    public void GetCurrencyAlerts(String token, ResponseCallback<CurrencyAlert[]> callback) {
         Call<CurrencyAlert[]> alertsCall = api.getAlerts("Bearer " + token);
         alertsCall.enqueue(new Callback<CurrencyAlert[]>() {
             @Override
             public void onResponse(Call<CurrencyAlert[]> call, Response<CurrencyAlert[]> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    callback.onSuccess(response.body());
-                }
-                else {
-                    callback.onFailure(response.code());
-                }
+                handleResponse(response, callback);
             }
 
             @Override
@@ -147,22 +122,12 @@ public class APIClient {
         });
     }
 
-    public interface SetCurrencyTargetCallback {
-        public void onSuccess(CurrencyTarget target);
-        public void onFailure(int httpCode);
-    }
-
-    public void SetCurrencyTarget(String token, CurrencyTarget target, SetCurrencyTargetCallback callback) {
+    public void SetCurrencyTarget(String token, CurrencyTarget target, ResponseCallback<CurrencyTarget> callback) {
         Call<CurrencyTarget> targetCall = api.setTarget("Bearer " + token, target);
         targetCall.enqueue(new Callback<CurrencyTarget>() {
             @Override
             public void onResponse(Call<CurrencyTarget> call, Response<CurrencyTarget> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    callback.onSuccess(response.body());
-                }
-                else {
-                    callback.onFailure(response.code());
-                }
+                handleResponse(response, callback);
             }
 
             @Override
@@ -172,22 +137,12 @@ public class APIClient {
         });
     }
 
-    public interface DeleteCurrencyTargetCallback {
-        public void onSuccess(CurrencyTarget target);
-        public void onFailure(int httpCode);
-    }
-
-    public void DeleteCurrencyTarget(String token, CurrencyTarget target, DeleteCurrencyTargetCallback callback) {
+    public void DeleteCurrencyTarget(String token, CurrencyTarget target, ResponseCallback<CurrencyTarget> callback) {
         Call<CurrencyTarget> deleteCall = api.deleteTarget("Bearer " + token, target);
         deleteCall.enqueue(new Callback<CurrencyTarget>() {
             @Override
             public void onResponse(Call<CurrencyTarget> call, Response<CurrencyTarget> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    callback.onSuccess(response.body());
-                }
-                else {
-                    callback.onFailure(response.code());
-                }
+                handleResponse(response, callback);
             }
 
             @Override
