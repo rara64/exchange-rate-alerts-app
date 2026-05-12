@@ -19,9 +19,12 @@
     <string name="targets_dialog_quote_currency_edit_label">Kod waluty wyceny:</string>
     <string name="targets_dialog_submit_button">Zatwierdź</string>
     <string name="targets_dialog_cancel_button">Anuluj</string>
+    <string name="targets_dialog_service_issue">Wystąpił błąd przy łączeniu z usługą.</string>
+    <string name="targets_refresh_failed">Wystąpił błąd przy łączeniu z usługą.</string>
     <string name="targets_delete_dialog_message">Czy napewno chcesz usunąć cel dla waluty %1$s w walucie wyceny %2$s?</string>
     <string name="targets_delete_dialog_delete_button">Usuń teraz</string>
     <string name="targets_delete_dialog_cancel_button">Anuluj</string>
+    <string name="targets_delete_failed_service_issue">Wystąpił błąd przy łączeniu z usługą.</string>
     <string name="alert_notification_title">Nowe alerty dostępne!</string>
     <string name="alert_notification_body">Sprawdź aplikację.</string>
     <string name="alert_notification_credential_failure_title">Wystąpił błąd podczas pobierania alertów.</string>
@@ -31,4 +34,5 @@
     <string name="settings_dialog_logout_cancel">Anuluj</string>
     <string name="targets_empty_recycler_text">Dodaj swój pierwszy cel używając przycisku +</string>
     <string name="login_screen_title">Alerty walutowe</string>
+    <string name="targets_dialog_same_currency_error">Kody walut nie mogą być takie same.</string>
 </resources>

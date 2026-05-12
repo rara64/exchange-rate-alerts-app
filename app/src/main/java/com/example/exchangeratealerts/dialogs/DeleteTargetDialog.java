@@ -5,6 +5,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
 
@@ -19,29 +22,38 @@ public class DeleteTargetDialog extends DialogFragment {
     private final String targetValue;
     private final APIClient client;
     private final PrivateStorage storage;
-
-    private DeleteTargetDialogCallback callback;
+    private final DeleteTargetDialogCallback callback;
+    private final Context context;
 
     public interface DeleteTargetDialogCallback {
         public void onSuccess();
     }
 
-    public DeleteTargetDialog(String baseCurr, String quoteCurr, String target, Context context, DeleteTargetDialogCallback clbck) {
+    public DeleteTargetDialog(String baseCurr, String quoteCurr, String target, Context ctx, DeleteTargetDialogCallback clbck) {
         baseCurrency = baseCurr;
         quoteCurrency = quoteCurr;
         targetValue = target;
         client = new APIClient();
-        storage = new PrivateStorage(context);
+        storage = new PrivateStorage(ctx);
         callback = clbck;
+        context = ctx;
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the Builder class for convenient dialog construction.
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(getString(R.string.targets_delete_dialog_message, baseCurrency, quoteCurrency))
-                .setPositiveButton(R.string.targets_delete_dialog_delete_button, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
+
+        AlertDialog dialog = builder.setMessage(getString(R.string.targets_delete_dialog_message, baseCurrency, quoteCurrency))
+                .setPositiveButton(R.string.targets_delete_dialog_delete_button, null)
+                .setNegativeButton(R.string.targets_delete_dialog_cancel_button, null)
+                .create();
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
                         CurrencyTarget target = new CurrencyTarget();
                         target.baseCurrency = baseCurrency;
                         target.quoteCurrency = quoteCurrency;
@@ -49,22 +61,21 @@ public class DeleteTargetDialog extends DialogFragment {
                         client.DeleteCurrencyTarget(storage.getTokenPref(), target, new APIClient.DeleteCurrencyTargetCallback() {
                             @Override
                             public void onSuccess(CurrencyTarget target) {
+                                dialog.dismiss();
                                 callback.onSuccess();
                             }
 
                             @Override
                             public void onFailure(int httpCode) {
-
+                                Toast toast = Toast.makeText(context, getString(R.string.targets_delete_failed_service_issue), Toast.LENGTH_LONG);
+                                toast.show();
                             }
                         });
                     }
-                })
-                .setNegativeButton(R.string.targets_delete_dialog_cancel_button, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
                 });
-        // Create the AlertDialog object and return it.
-        return builder.create();
+            }
+        });
+
+        return dialog;
     }
 }

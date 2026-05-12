@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -65,7 +66,32 @@ public class TargetsActivity extends AppCompatActivity {
         });
     }
 
-    List<CurrencyTarget> currencyTargetList;
+    private List<CurrencyTarget> currencyTargetList;
+
+    private void handleUpdateFailure(boolean isSwipeRefresh) {
+        LinearLayout emptyRecyclerLayout = findViewById(R.id.emptyCollectionLayout);
+        LinearLayout loadingDataSpinner = findViewById(R.id.loadingDataSpinner);
+        SwipeRefreshLayout refreshLayout = findViewById(R.id.swipeRefreshLayout);
+        RecyclerView recyclerView = findViewById(R.id.targetsRecycler);
+
+        if (!isSwipeRefresh) {
+            loadingDataSpinner.setVisibility(GONE);
+        }
+        else {
+            refreshLayout.setRefreshing(false);
+        }
+
+        if (recyclerView.getAdapter() != null && recyclerView.getAdapter().getItemCount() > 0) {
+            recyclerView.setVisibility(VISIBLE);
+        }
+        else {
+            emptyRecyclerLayout.setVisibility(VISIBLE);
+        }
+
+        Toast toast = Toast.makeText(recyclerView.getContext(), getString(R.string.targets_refresh_failed), Toast.LENGTH_LONG);
+        toast.show();
+    }
+
     public void updateCurrencyTargetList(boolean isSwipeRefresh) {
         LinearLayout loadingDataSpinner = findViewById(R.id.loadingDataSpinner);
         SwipeRefreshLayout refreshLayout = findViewById(R.id.swipeRefreshLayout);
@@ -77,6 +103,7 @@ public class TargetsActivity extends AppCompatActivity {
         }
 
         String token = storage.getTokenPref();
+        LinearLayout emptyRecyclerLayout = findViewById(R.id.emptyCollectionLayout);
 
         client.GetCurrencyTargets(token, new APIClient.CurrencyTargetsCallback() {
             @Override
@@ -85,7 +112,6 @@ public class TargetsActivity extends AppCompatActivity {
                 client.GetCurrencyAlerts(token, new APIClient.GetCurrencyAlertsCallback() {
                     @Override
                     public void onSuccess(CurrencyAlert[] alerts) {
-                        LinearLayout emptyRecyclerLayout = findViewById(R.id.emptyCollectionLayout);
 
                         if (alerts.length == 0) {
                             emptyRecyclerLayout.setVisibility(VISIBLE);
@@ -108,7 +134,7 @@ public class TargetsActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(int httpCode) {
-
+                        handleUpdateFailure(isSwipeRefresh);
                     }
                 });
 
@@ -116,7 +142,7 @@ public class TargetsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int httpCode) {
-
+                handleUpdateFailure(isSwipeRefresh);
             }
         });
     }

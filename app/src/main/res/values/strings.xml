@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Exchange Rate Alerts</string>
+    <string name="app_name">Exchange Rate Alerts</string>
     <string name="login_button">Login</string>
     <string name="register_button">Register</string>
     <string name="username_input_hint">Username</string>
@@ -18,9 +18,13 @@
     <string name="targets_dialog_quote_currency_edit_label">Quote currency code:</string>
     <string name="targets_dialog_submit_button">Submit</string>
     <string name="targets_dialog_cancel_button">Cancel</string>
+    <string name="targets_dialog_same_currency_error">Currency codes cannot be the same.</string>
+    <string name="targets_dialog_service_issue">There was an issue when connecting to the service.</string>
+    <string name="targets_refresh_failed">There was an issue when connecting to the service.</string>
     <string name="targets_delete_dialog_message">Are you sure you want to delete the %1$s to %2$s target?</string>
     <string name="targets_delete_dialog_delete_button">Delete now</string>
     <string name="targets_delete_dialog_cancel_button">Cancel</string>
+    <string name="targets_delete_failed_service_issue">There was an issue when connecting to the service.</string>
     <string name="alert_notification_title">New alerts available!</string>
     <string name="alert_notification_body">Check the app now.</string>
     <string name="alert_notification_credential_failure_title">There was an error when fetching alerts.</string>

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -30,30 +31,27 @@ public class TargetDialog extends DialogFragment {
     private final String targetValue;
     private final APIClient client;
     private final PrivateStorage storage;
-
-    private TargetDialogCallback callback;
-
+    private final TargetDialogCallback callback;
+    private final Context context;
     public interface TargetDialogCallback {
         public void onSuccess();
     }
 
-    public TargetDialog(String baseCurr, String quoteCurr, String targetVal, Context context, TargetDialogCallback clbk){
+    public TargetDialog(String baseCurr, String quoteCurr, String targetVal, Context ctx, TargetDialogCallback clbk){
         baseCurrency = baseCurr;
         quoteCurrency = quoteCurr;
         targetValue = targetVal;
         client = new APIClient();
-        storage = new PrivateStorage(context);
+        storage = new PrivateStorage(ctx);
         callback = clbk;
+        context = ctx;
     }
 
     @Override
     @NotNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Get the layout inflater.
         LayoutInflater inflater = requireActivity().getLayoutInflater();
 
-        // Inflate and set the layout for the dialog.
         View dialogView = inflater.inflate(R.layout.targets_edit_dialog, null);
         NumberPicker beforeDecimalPicker = dialogView.findViewById(R.id.editTargetValueBeforeDecimal);
         NumberPicker afterDecimalPicker = dialogView.findViewById(R.id.editTargetValueAfterDecimal);
@@ -106,41 +104,49 @@ public class TargetDialog extends DialogFragment {
         if (baseCurrency.isEmpty() && quoteCurrency.isEmpty())
             dialogTitle.setText(R.string.targets_dialog_title_add_variant);
 
-        builder.setView(dialogView)
-                // Add action buttons
-                .setPositiveButton(R.string.targets_dialog_submit_button, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        CurrencyTarget target = new CurrencyTarget();
-                        target.baseCurrency = baseCurrencySpinner.getSelectedItem().toString();
-                        target.quoteCurrency = quoteCurrencySpinner.getSelectedItem().toString();
-                        target.targetValue = beforeDecimalPicker.getValue() + "." + afterDecimalPicker.getValue();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-                        if (target.baseCurrency.equals(target.quoteCurrency)) {
-                            Toast toast = Toast.makeText(dialogView.getContext(), "UPS!", Toast.LENGTH_LONG);
-                            toast.show();
-                            return;
-                        }
+        AlertDialog dialog = builder.setView(dialogView)
+                .setPositiveButton(R.string.targets_dialog_submit_button, null)
+                .setNegativeButton(R.string.targets_dialog_cancel_button, null)
+                .create();
 
-                        client.SetCurrencyTarget(storage.getTokenPref(), target, new APIClient.SetCurrencyTargetCallback() {
-                            @Override
-                            public void onSuccess(CurrencyTarget target) {
-                                callback.onSuccess();
-                            }
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+             @Override
+             public void onShow(DialogInterface dialog) {
+                 Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                 button.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick (View view){
+                         CurrencyTarget target = new CurrencyTarget();
+                         target.baseCurrency = baseCurrencySpinner.getSelectedItem().toString();
+                         target.quoteCurrency = quoteCurrencySpinner.getSelectedItem().toString();
+                         target.targetValue = beforeDecimalPicker.getValue() + "." + afterDecimalPicker.getValue();
 
-                            @Override
-                            public void onFailure(int httpCode) {
-                                Toast toast = Toast.makeText(dialogView.getContext(), "UPS!", Toast.LENGTH_LONG);
-                                toast.show();
-                            }
-                        });
-                    }
-                })
-                .setNegativeButton(R.string.targets_dialog_cancel_button, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        return builder.create();
+                         if (target.baseCurrency.equals(target.quoteCurrency)) {
+                             Toast toast = Toast.makeText(context, getString(R.string.targets_dialog_same_currency_error), Toast.LENGTH_LONG);
+                             toast.show();
+                             return;
+                         }
+
+                         client.SetCurrencyTarget(storage.getTokenPref(), target, new APIClient.SetCurrencyTargetCallback() {
+                             @Override
+                             public void onSuccess(CurrencyTarget target) {
+                                 dialog.dismiss();
+                                 callback.onSuccess();
+                             }
+
+                             @Override
+                             public void onFailure(int httpCode) {
+                                 Toast toast = Toast.makeText(context, getString(R.string.targets_dialog_service_issue), Toast.LENGTH_LONG);
+                                 toast.show();
+                             }
+                         });
+                     }
+                 });
+             }
+        });
+
+        return dialog;
     }
 }

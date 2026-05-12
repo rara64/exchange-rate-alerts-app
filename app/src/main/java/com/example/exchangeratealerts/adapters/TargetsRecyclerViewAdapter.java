@@ -46,13 +46,11 @@ public class TargetsRecyclerViewAdapter extends RecyclerView.Adapter<TargetsRecy
 
         public ViewHolder(View view) {
             super(view);
-            // Define click listener for the ViewHolder's View
-
-            baseCurrencyCode = (TextView) view.findViewById(R.id.baseCurrencyCode);
-            quoteCurrencyCode = (TextView) view.findViewById(R.id.quoteCurrencyCode);
-            currentValue = (TextView) view.findViewById(R.id.currentValue);
-            targetValue = (TextView) view.findViewById(R.id.targetValue);
-            targetEditButton = (ImageButton) view.findViewById(R.id.targetEditButton);
+            baseCurrencyCode = view.findViewById(R.id.baseCurrencyCode);
+            quoteCurrencyCode = view.findViewById(R.id.quoteCurrencyCode);
+            currentValue = view.findViewById(R.id.currentValue);
+            targetValue = view.findViewById(R.id.targetValue);
+            targetEditButton = view.findViewById(R.id.targetEditButton);
             currentValueRow = view.findViewById(R.id.currentValueRow);
             targetValueRow = view.findViewById(R.id.targetValueRow);
             statusRibbon = view.findViewById(R.id.statusRibbon);
