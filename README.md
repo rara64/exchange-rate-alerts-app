@@ -23,11 +23,13 @@ The following libraries were used:
 
 ## Screenshots
 
-<img src="img/login.png" width="200" alt="Login screen">
-<img src="img/targets.png" width="200" alt="Targets screen">
-<img src="img/empty_targets.png" width="200" alt="Empty targets screen">
-<img src="img/add_target.png" width="200" alt="Add a new target">
-<img src="img/edit_target.png" width="200" alt="Edit a target">
-<img src="img/delete_target.png" width="200" alt="Delete a target">
-<img src="img/logout.png" width="200" alt="Logout">
-<img src="img/notification.png" width="200" alt="Notifcation">
+<p align="center">
+  <img src="img/login.png" width="200" alt="Login screen">
+  <img src="img/targets.png" width="200" alt="Targets screen">
+  <img src="img/empty_targets.png" width="200" alt="Empty targets screen">
+  <img src="img/add_target.png" width="200" alt="Add a new target">
+  <img src="img/edit_target.png" width="200" alt="Edit a target">
+  <img src="img/delete_target.png" width="200" alt="Delete a target">
+  <img src="img/logout.png" width="200" alt="Logout">
+  <img src="img/notification.png" width="200" alt="Notification">
+</p>
