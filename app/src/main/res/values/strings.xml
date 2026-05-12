@@ -25,4 +25,7 @@
     <string name="alert_notification_body">Check the app now.</string>
     <string name="alert_notification_credential_failure_title">There was an error when fetching alerts.</string>
     <string name="alert_notification_credential_failure_body">Your credentials are incorrect. Check the app now.</string>
+    <string name="settings_dialog_logout_question">Are you sure you want to log out?</string>
+    <string name="settings_dialog_logout_submit">Logout</string>
+    <string name="settings_dialog_logout_cancel">Cancel</string>
 </resources>

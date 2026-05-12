@@ -31,12 +31,19 @@ public class TargetDialog extends DialogFragment {
     private final APIClient client;
     private final PrivateStorage storage;
 
-    public TargetDialog(String baseCurr, String quoteCurr, String targetVal, Context context){
+    private TargetDialogCallback callback;
+
+    public interface TargetDialogCallback {
+        public void onSuccess();
+    }
+
+    public TargetDialog(String baseCurr, String quoteCurr, String targetVal, Context context, TargetDialogCallback clbk){
         baseCurrency = baseCurr;
         quoteCurrency = quoteCurr;
         targetValue = targetVal;
         client = new APIClient();
         storage = new PrivateStorage(context);
+        callback = clbk;
     }
 
     @Override
@@ -118,7 +125,7 @@ public class TargetDialog extends DialogFragment {
                         client.SetCurrencyTarget(storage.getTokenPref(), target, new APIClient.SetCurrencyTargetCallback() {
                             @Override
                             public void onSuccess(CurrencyTarget target) {
-                                dialog.cancel();
+                                callback.onSuccess();
                             }
 
                             @Override

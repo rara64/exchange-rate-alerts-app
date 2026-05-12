@@ -3,6 +3,7 @@ package com.example.exchangeratealerts.modules;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 
 import com.example.exchangeratealerts.models.CurrencyAlert;
@@ -11,8 +12,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class PrivateStorage {
     private static SharedPreferences preferences;
@@ -80,6 +84,7 @@ public class PrivateStorage {
                 object.putOpt("baseCurrency", alert.baseCurrency);
                 object.putOpt("quoteCurrency", alert.quoteCurrency);
                 object.putOpt("targetValue", alert.targetValue);
+                object.putOpt("currentValue", alert.currentValue);
 
                 array.put(object);
             }
@@ -89,7 +94,24 @@ public class PrivateStorage {
         }
     }
 
-    public String getAlertsPref() {
-        return getPreferenceString("alerts");
+    public CurrencyAlert[] getAlertsPref() {
+        try {
+            ArrayList<CurrencyAlert> alerts = new ArrayList<CurrencyAlert>();
+            JSONArray array = new JSONArray(getPreferenceString("alerts"));
+
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject object = array.getJSONObject(i);
+                CurrencyAlert alert = new CurrencyAlert();
+                alert.baseCurrency = object.optString("baseCurrency", "");
+                alert.quoteCurrency = object.optString("quoteCurrency", "");
+                alert.targetValue = object.optString("targetValue", "");
+                alert.currentValue = object.optString("currentValue", "");
+                alerts.add(alert);
+            }
+
+            return alerts.toArray(new CurrencyAlert[alerts.size()]);
+        } catch (JSONException e) {
+            return new CurrencyAlert[0];
+        }
     }
 }
