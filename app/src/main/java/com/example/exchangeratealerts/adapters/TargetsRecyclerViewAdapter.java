@@ -1,5 +1,6 @@
 package com.example.exchangeratealerts.adapters;
 
+import static android.app.PendingIntent.getActivity;
 import static android.view.View.GONE;
 
 import android.view.LayoutInflater;
@@ -14,10 +15,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.exchangeratealerts.R;
+import com.example.exchangeratealerts.activities.TargetsActivity;
 import com.example.exchangeratealerts.dialogs.DeleteTargetDialog;
 import com.example.exchangeratealerts.dialogs.TargetDialog;
 import com.example.exchangeratealerts.models.CurrencyAlert;
 import com.example.exchangeratealerts.models.CurrencyTarget;
+import com.example.exchangeratealerts.modules.APIClient;
 
 import java.util.Arrays;
 
@@ -131,7 +134,8 @@ public class TargetsRecyclerViewAdapter extends RecyclerView.Adapter<TargetsRecy
                 alert.quoteCurrency.equals(currencyTargets[position].quoteCurrency)).findFirst().orElse(null);
 
         if (currencyAlert != null) {
-            viewHolder.getCurrentValue().setText(currencyAlert.currentValue + " " + currencyTargets[position].quoteCurrency);
+            String value = currencyAlert.currentValue;
+            viewHolder.getCurrentValue().setText(value.substring(0, Math.min(value.length(), 6)) +  " " + currencyTargets[position].quoteCurrency);
             viewHolder.getStatusRibbon().setBackground(viewHolder.getStatusRibbon().getResources().getDrawable(R.color.alert_recycler_item));
         }
         else {
@@ -145,7 +149,15 @@ public class TargetsRecyclerViewAdapter extends RecyclerView.Adapter<TargetsRecy
                         currencyTargets[position].baseCurrency,
                         currencyTargets[position].quoteCurrency,
                         currencyTargets[position].targetValue,
-                        v.getContext());
+                        v.getContext(),
+                        new TargetDialog.TargetDialogCallback() {
+                            @Override
+                            public void onSuccess() {
+                                if (v.getContext() instanceof TargetsActivity) {
+                                    ((TargetsActivity) v.getContext()).updateCurrencyTargetList(false);
+                                }
+                            }
+                        });
                 dialog.show(((AppCompatActivity)v.getContext()).getSupportFragmentManager(), "EditTargetDialog");
             }
         });
@@ -157,7 +169,15 @@ public class TargetsRecyclerViewAdapter extends RecyclerView.Adapter<TargetsRecy
                         currencyTargets[position].baseCurrency,
                         currencyTargets[position].quoteCurrency,
                         currencyTargets[position].targetValue,
-                        v.getContext());
+                        v.getContext(),
+                        new DeleteTargetDialog.DeleteTargetDialogCallback() {
+                            @Override
+                            public void onSuccess() {
+                                if (v.getContext() instanceof TargetsActivity) {
+                                    ((TargetsActivity) v.getContext()).updateCurrencyTargetList(false);
+                                }
+                            }
+                        });
                 dialog.show(((AppCompatActivity)v.getContext()).getSupportFragmentManager(), "DeleteTargetDialog");
 
             }

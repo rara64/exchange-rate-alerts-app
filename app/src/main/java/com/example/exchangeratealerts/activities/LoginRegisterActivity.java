@@ -17,7 +17,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
-import androidx.work.WorkerParameters;
 
 import com.example.exchangeratealerts.R;
 import com.example.exchangeratealerts.models.JWT;
@@ -55,10 +54,14 @@ public class LoginRegisterActivity extends AppCompatActivity {
         String username = storage.getUsernamePref();
         String password = storage.getPasswordPref();
 
-        if (!username.isEmpty() && !password.isEmpty()) {
-            EditText userInput = findViewById(R.id.userInput);
-            EditText passwordInput = findViewById(R.id.passwordInput);
+        EditText userInput = findViewById(R.id.userInput);
+        EditText passwordInput = findViewById(R.id.passwordInput);
+
+        if (!username.isEmpty()) {
             userInput.setText(username);
+        }
+
+        if (!username.isEmpty() && !password.isEmpty()) {
             passwordInput.setText(password);
             onLoginClick(findViewById(R.id.loginButton), false);
         }
@@ -85,6 +88,17 @@ public class LoginRegisterActivity extends AppCompatActivity {
         authButtonGroup.setVisibility(VISIBLE);
     }
 
+    private void hideMessage() {
+        TextView messageTextView = findViewById(R.id.messageTextView);
+        messageTextView.setVisibility(GONE);
+    }
+
+    private void showMessage(int id) {
+        TextView messageTextView = findViewById(R.id.messageTextView);
+        messageTextView.setText(id);
+        messageTextView.setVisibility(VISIBLE);
+    }
+
     private void openTargetsActivity() {
         Intent intent = new Intent(LoginRegisterActivity.this, TargetsActivity.class);
         startActivity(intent);
@@ -101,6 +115,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
     }
 
     public void onLoginClick(View view) {
+        hideMessage();
         onLoginClick(view, true);
     }
     public void onLoginClick(View view, Boolean saveCredentials) {
@@ -114,8 +129,6 @@ public class LoginRegisterActivity extends AppCompatActivity {
         client.Login(username, password, new APIClient.LoginCallback() {
             @Override
             public void onSuccess(JWT token) {
-                hideSpinner();
-
                 if (saveCredentials)
                     saveCredentials(username, password);
 
@@ -128,13 +141,11 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int httpCode) {
-                TextView messageTextView = findViewById(R.id.messageTextView);
-
                 if (httpCode == 401) {
-                    messageTextView.setText(R.string.login_failure_unauthorized);
+                    showMessage(R.string.login_failure_unauthorized);
                 }
                 else {
-                    messageTextView.setText(R.string.login_failure_http);
+                    showMessage(R.string.login_failure_http);
                 }
 
                 hideSpinner();
@@ -143,6 +154,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
     }
 
     public void onRegisterClick(View view) {
+        hideMessage();
         onRegisterClick(view, true);
     }
     public void onRegisterClick(View view, Boolean saveCredentials) {
@@ -167,13 +179,11 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int httpCode) {
-                TextView messageTextView = findViewById(R.id.messageTextView);
-
                 if (httpCode == 409) {
-                    messageTextView.setText(R.string.login_failure_user_exists);
+                    showMessage(R.string.login_failure_user_exists);
                 }
                 else {
-                    messageTextView.setText(R.string.login_failure_http);
+                    showMessage(R.string.login_failure_http);
                 }
 
                 hideSpinner();

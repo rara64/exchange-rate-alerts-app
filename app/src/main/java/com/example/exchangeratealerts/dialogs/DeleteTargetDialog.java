@@ -20,12 +20,19 @@ public class DeleteTargetDialog extends DialogFragment {
     private final APIClient client;
     private final PrivateStorage storage;
 
-    public DeleteTargetDialog(String baseCurr, String quoteCurr, String target, Context context) {
+    private DeleteTargetDialogCallback callback;
+
+    public interface DeleteTargetDialogCallback {
+        public void onSuccess();
+    }
+
+    public DeleteTargetDialog(String baseCurr, String quoteCurr, String target, Context context, DeleteTargetDialogCallback clbck) {
         baseCurrency = baseCurr;
         quoteCurrency = quoteCurr;
         targetValue = target;
         client = new APIClient();
         storage = new PrivateStorage(context);
+        callback = clbck;
     }
 
     @Override
@@ -42,7 +49,7 @@ public class DeleteTargetDialog extends DialogFragment {
                         client.DeleteCurrencyTarget(storage.getTokenPref(), target, new APIClient.DeleteCurrencyTargetCallback() {
                             @Override
                             public void onSuccess(CurrencyTarget target) {
-                                dialog.cancel();
+                                callback.onSuccess();
                             }
 
                             @Override

@@ -5,6 +5,7 @@
     android:id="@+id/targets"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTintMode="src_in"
     tools:context=".activities.TargetsActivity">
 
     <LinearLayout
@@ -16,26 +17,65 @@
         tools:layout_editor_absoluteX="32dp"
         tools:layout_editor_absoluteY="32dp">
 
-        <TextView
-            android:id="@+id/welcomeTitle"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:orientation="horizontal">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/targetsRecycler"
+            <TextView
+                android:id="@+id/welcomeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/settingsButton"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_gravity="end"
+                android:backgroundTint="@color/design_default_color_primary"
+                android:backgroundTintMode="src_in"
+                android:onClick="onSettingsClick"
+                app:srcCompat="@drawable/logout" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/loadingDataSpinner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:onClick="onAddTargetClick"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/welcomeTitle" />
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ProgressBar
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/targetsRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:onClick="onAddTargetClick"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/welcomeTitle" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 
@@ -57,8 +97,8 @@
             android:layout_margin="16dp"
             android:clickable="true"
             android:focusable="true"
-            app:srcCompat="@android:drawable/ic_menu_add"
-            android:onClick="onAddTargetClick" />
+            android:onClick="onAddTargetClick"
+            app:srcCompat="@android:drawable/ic_menu_add" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

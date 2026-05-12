@@ -1,9 +1,14 @@
 package com.example.exchangeratealerts.activities;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.icu.text.MessageFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -12,9 +17,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.exchangeratealerts.R;
 import com.example.exchangeratealerts.adapters.TargetsRecyclerViewAdapter;
+import com.example.exchangeratealerts.dialogs.SettingsDialog;
 import com.example.exchangeratealerts.dialogs.TargetDialog;
 import com.example.exchangeratealerts.models.CurrencyAlert;
 import com.example.exchangeratealerts.models.CurrencyTarget;
@@ -47,22 +54,46 @@ public class TargetsActivity extends AppCompatActivity {
                 getString(R.string.targets_welcome_title,
                 storage.getUsernamePref()));
 
-        updateCurrencyTargetList();
+        updateCurrencyTargetList(false);
+
+        SwipeRefreshLayout refreshLayout = findViewById(R.id.swipeRefreshLayout);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                updateCurrencyTargetList(true);
+            }
+        });
     }
 
     List<CurrencyTarget> currencyTargetList;
-    private void updateCurrencyTargetList() {
+    public void updateCurrencyTargetList(boolean isSwipeRefresh) {
+        LinearLayout loadingDataSpinner = findViewById(R.id.loadingDataSpinner);
+        SwipeRefreshLayout refreshLayout = findViewById(R.id.swipeRefreshLayout);
+        RecyclerView recyclerView = findViewById(R.id.targetsRecycler);
+        recyclerView.setVisibility(GONE);
+
+        if (!isSwipeRefresh) {
+            loadingDataSpinner.setVisibility(VISIBLE);
+        }
+
         String token = storage.getTokenPref();
 
         client.GetCurrencyTargets(token, new APIClient.CurrencyTargetsCallback() {
             @Override
             public void onSuccess(CurrencyTarget[] targets) {
                 currencyTargetList = Arrays.asList(targets);
-                RecyclerView recyclerView = findViewById(R.id.targetsRecycler);
                 client.GetCurrencyAlerts(token, new APIClient.GetCurrencyAlertsCallback() {
                     @Override
                     public void onSuccess(CurrencyAlert[] alerts) {
                         recyclerView.setAdapter(new TargetsRecyclerViewAdapter(targets, alerts));
+
+                        if (!isSwipeRefresh) {
+                            loadingDataSpinner.setVisibility(GONE);
+                        }
+                        else {
+                            refreshLayout.setRefreshing(false);
+                        }
+                        recyclerView.setVisibility(VISIBLE);
                     }
 
                     @Override
@@ -85,7 +116,18 @@ public class TargetsActivity extends AppCompatActivity {
                 "",
                 "",
                 "",
-                view.getContext());
+                view.getContext(),
+                new TargetDialog.TargetDialogCallback() {
+                    @Override
+                    public void onSuccess() {
+                        updateCurrencyTargetList(false);
+                    }
+                });
         dialog.show(getSupportFragmentManager(), "EditTargetDialog");
+    }
+
+    public void onSettingsClick(View view) {
+        SettingsDialog dialog = new SettingsDialog(view.getContext(), storage);
+        dialog.show(getSupportFragmentManager(), "SettingsDialog");
     }
 }

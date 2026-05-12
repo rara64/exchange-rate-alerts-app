@@ -1,5 +1,6 @@
 package com.example.exchangeratealerts.modules;
 
+import com.example.exchangeratealerts.BuildConfig;
 import com.example.exchangeratealerts.models.APIMessage;
 import com.example.exchangeratealerts.models.CurrencyAlert;
 import com.example.exchangeratealerts.models.CurrencyTarget;
@@ -20,10 +21,15 @@ public class APIClient {
     private static APIInterface api;
 
     public APIClient() {
-        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        var httpClientBuilder = new OkHttpClient.Builder();
 
-        OkHttpClient httpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();
+        if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            httpClientBuilder.addInterceptor(httpLoggingInterceptor);
+        }
+
+        OkHttpClient httpClient = httpClientBuilder.build();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://rararuf16.pythonanywhere.com")
