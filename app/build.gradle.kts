@@ -18,6 +18,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "API_URL", "\"http://example.pythonanywhere.com\"")
     }
 
     buildTypes {
@@ -52,6 +53,6 @@ dependencies {
     implementation("com.google.code.gson:gson:2.13.2")
     implementation("com.squareup.okhttp3:logging-interceptor:3.4.1")
     implementation("com.squareup.okhttp3:okhttp:3.4.1")
-    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation("androidx.work:work-runtime:2.9.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 }

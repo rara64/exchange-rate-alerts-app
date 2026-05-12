@@ -32,7 +32,7 @@ public class APIClient {
         OkHttpClient httpClient = httpClientBuilder.build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://rararuf16.pythonanywhere.com")
+                .baseUrl(BuildConfig.API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient)
                 .build();
