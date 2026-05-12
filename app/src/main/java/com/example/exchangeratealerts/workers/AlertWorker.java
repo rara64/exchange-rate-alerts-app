@@ -106,7 +106,9 @@ public class AlertWorker extends Worker {
                 CurrencyAlert[] pastAlerts = storage.getAlertsPref();
                 if (!Arrays.equals(alerts, pastAlerts)) {
                     storage.setAlertsPref(alerts);
-                    sendAlertNotification();
+
+                    if (alerts.length > 0)
+                        sendAlertNotification();
                 }
             }
 

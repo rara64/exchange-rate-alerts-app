@@ -85,7 +85,15 @@ public class TargetsActivity extends AppCompatActivity {
                 client.GetCurrencyAlerts(token, new APIClient.GetCurrencyAlertsCallback() {
                     @Override
                     public void onSuccess(CurrencyAlert[] alerts) {
-                        recyclerView.setAdapter(new TargetsRecyclerViewAdapter(targets, alerts));
+                        LinearLayout emptyRecyclerLayout = findViewById(R.id.emptyCollectionLayout);
+
+                        if (alerts.length == 0) {
+                            emptyRecyclerLayout.setVisibility(VISIBLE);
+                        }
+                        else {
+                            emptyRecyclerLayout.setVisibility(GONE);
+                            recyclerView.setAdapter(new TargetsRecyclerViewAdapter(targets, alerts));
+                        }
 
                         if (!isSwipeRefresh) {
                             loadingDataSpinner.setVisibility(GONE);
@@ -93,7 +101,9 @@ public class TargetsActivity extends AppCompatActivity {
                         else {
                             refreshLayout.setRefreshing(false);
                         }
-                        recyclerView.setVisibility(VISIBLE);
+
+                        if (alerts.length != 0)
+                            recyclerView.setVisibility(VISIBLE);
                     }
 
                     @Override

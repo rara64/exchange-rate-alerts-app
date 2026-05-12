@@ -29,4 +29,5 @@
     <string name="settings_dialog_logout_question">Czy napewno chcesz się wylogować?</string>
     <string name="settings_dialog_logout_submit">Wyloguj się</string>
     <string name="settings_dialog_logout_cancel">Anuluj</string>
+    <string name="targets_empty_recycler_text">Dodaj swój pierwszy cel używając przycisku +</string>
 </resources>
