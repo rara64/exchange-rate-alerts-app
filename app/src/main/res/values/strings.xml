@@ -29,4 +29,5 @@
     <string name="settings_dialog_logout_submit">Logout</string>
     <string name="settings_dialog_logout_cancel">Cancel</string>
     <string name="targets_empty_recycler_text">Add your first target using the + button</string>
+    <string name="login_screen_title">Exchange Rate Alerts</string>
 </resources>

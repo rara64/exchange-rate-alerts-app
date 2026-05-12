@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Exchange Rate Alerts</string>
+    <string name="app_name">Alerty walutowe</string>
     <string name="login_button">Zaloguj się</string>
     <string name="register_button">Zarejestruj się</string>
     <string name="username_input_hint">Nazwa użytkownika</string>
@@ -30,4 +30,5 @@
     <string name="settings_dialog_logout_submit">Wyloguj się</string>
     <string name="settings_dialog_logout_cancel">Anuluj</string>
     <string name="targets_empty_recycler_text">Dodaj swój pierwszy cel używając przycisku +</string>
+    <string name="login_screen_title">Alerty walutowe</string>
 </resources>
