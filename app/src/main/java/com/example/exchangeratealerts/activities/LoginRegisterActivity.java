@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -48,6 +49,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
         client = new APIClient();
         storage = new PrivateStorage(getApplicationContext());
 
+        clearNotifications();
         autoLogin();
     }
 
@@ -66,6 +68,11 @@ public class LoginRegisterActivity extends AppCompatActivity {
             passwordInput.setText(password);
             onLoginClick(findViewById(R.id.loginButton), false);
         }
+    }
+
+    private void clearNotifications() {
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.cancelAll();
     }
 
     private void saveCredentials(String username, String password) {

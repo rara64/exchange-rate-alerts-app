@@ -113,7 +113,7 @@ public class TargetsActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(CurrencyAlert[] alerts) {
 
-                        if (alerts.length == 0) {
+                        if (targets.length == 0) {
                             emptyRecyclerLayout.setVisibility(VISIBLE);
                         }
                         else {
@@ -128,7 +128,7 @@ public class TargetsActivity extends AppCompatActivity {
                             refreshLayout.setRefreshing(false);
                         }
 
-                        if (alerts.length != 0)
+                        if (targets.length != 0)
                             recyclerView.setVisibility(VISIBLE);
                     }
 
