@@ -24,7 +24,7 @@ The following libraries were used:
 * **androidx.work:work-runtime** is used for creating a background worker that periodically checks for new alerts and sends a notification.
 * **androidx.swiperefreshlayout** to provide a way of refreshing the targets list with a swipe.
 
-Additionally, Google Fonts Icons were used for action buttons and the app icon.
+Google Fonts Icons were used for action buttons and the app icon.
 
 ## Screenshots
 
