@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Exchange Rate Alerts</string>
+    <string name="app_name" translatable="false">Exchange Rate Alerts</string>
     <string name="login_button">Login</string>
     <string name="register_button">Register</string>
     <string name="username_input_hint">Username</string>
@@ -8,8 +8,8 @@
     <string name="login_failure_http">An issue occurred when connecting to the service.</string>
     <string name="login_failure_user_exists">User already exists.</string>
     <string name="targets_welcome_title">Welcome %1$s!</string>
-    <string name="targets_recycler_item_current_value_label">Current:</string>
-    <string name="targets_recycler_item_target_value_label">Target:</string>
+    <string name="targets_recycler_item_current_value_label">Current</string>
+    <string name="targets_recycler_item_target_value_label">Target</string>
     <string name="targets_recycler_item_edit_button_label">Edit target</string>
     <string name="targets_dialog_title_edit_variant">Edit target</string>
     <string name="targets_dialog_title_add_variant">Add target</string>

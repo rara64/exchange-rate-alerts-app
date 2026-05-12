@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Exchange Rate Alerts</string>
+    <string name="login_button">Zaloguj się</string>
+    <string name="register_button">Zarejestruj się</string>
+    <string name="username_input_hint">Nazwa użytkownika</string>
+    <string name="password_input_hint">Hasło</string>
+    <string name="login_failure_unauthorized">Nazwa użytkownika lub hasło są niepoprawne.</string>
+    <string name="login_failure_http">Wystąpił błąd w trakcie łączenia z usługą.</string>
+    <string name="login_failure_user_exists">Użytkownik już istnieje.</string>
+    <string name="targets_welcome_title">Cześć %1$s!</string>
+    <string name="targets_recycler_item_current_value_label">Obecnie</string>
+    <string name="targets_recycler_item_target_value_label">Cel</string>
+    <string name="targets_recycler_item_edit_button_label">Edytuj cel</string>
+    <string name="targets_dialog_title_edit_variant">Edytuj cel</string>
+    <string name="targets_dialog_title_add_variant">Dodaj cel</string>
+    <string name="targets_dialog_rate_target_edit_label">Cel w walucie wyceny:</string>
+    <string name="targets_dialog_base_currency_edit_label">Kod podstawowej waluty:</string>
+    <string name="targets_dialog_quote_currency_edit_label">Kod waluty wyceny:</string>
+    <string name="targets_dialog_submit_button">Zatwierdź</string>
+    <string name="targets_dialog_cancel_button">Anuluj</string>
+    <string name="targets_delete_dialog_message">Czy napewno chcesz usunąć cel dla waluty %1$s w walucie wyceny %2$s?</string>
+    <string name="targets_delete_dialog_delete_button">Usuń teraz</string>
+    <string name="targets_delete_dialog_cancel_button">Anuluj</string>
+    <string name="alert_notification_title">Nowe alerty dostępne!</string>
+    <string name="alert_notification_body">Sprawdź aplikację.</string>
+    <string name="alert_notification_credential_failure_title">Wystąpił błąd podczas pobierania alertów.</string>
+    <string name="alert_notification_credential_failure_body">Twój login lub hasło są niepoprawne. Sprawdź aplikację.</string>
+    <string name="settings_dialog_logout_question">Czy napewno chcesz się wylogować?</string>
+    <string name="settings_dialog_logout_submit">Wyloguj się</string>
+    <string name="settings_dialog_logout_cancel">Anuluj</string>
+</resources>
