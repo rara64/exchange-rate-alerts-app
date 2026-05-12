@@ -56,7 +56,7 @@ public class AlertWorker extends Worker {
         );
 
         var builder = new NotificationCompat.Builder(context, "exchangeratealerts.news")
-                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setSmallIcon(R.drawable.currency_exchange)
                 .setContentTitle(context.getString(R.string.alert_notification_title))
                 .setContentText(context.getString(R.string.alert_notification_body))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -82,7 +82,7 @@ public class AlertWorker extends Worker {
         );
 
         var builder = new NotificationCompat.Builder(context, "exchangeratealerts.news")
-                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setSmallIcon(R.drawable.currency_exchange)
                 .setContentTitle(context.getString(R.string.alert_notification_credential_failure_title))
                 .setContentText(context.getString(R.string.alert_notification_credential_failure_body))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
